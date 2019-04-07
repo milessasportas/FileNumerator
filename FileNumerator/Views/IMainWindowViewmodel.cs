@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileNumerator.Viewmodels
+namespace FileNumerator.Views
 {
-	class MainWindowViewmodel : Views.IMainWindowViewmodel
+	public interface IMainWindowViewmodel
 	{
+
 	}
 }
