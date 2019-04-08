@@ -13,7 +13,7 @@ namespace FileNumerator.Views
 		/// <summary>
 		/// Command wich starts the Enumeration
 		/// </summary>
-		ICommand Start { get; }
+		ICommand RenameFiles { get; }
 
 		/// <summary>
 		/// Coomand wich SelectsTheDirectory
