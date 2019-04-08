@@ -138,16 +138,15 @@ namespace FileNumerator.Viewmodels
 
 		#endregion [ Commands ]
 
-
 		#region [ Explicit IMainWindowViewmodel ]
 
 		ICommand IMainWindowViewmodel.RenameFiles => RenameFiles;
 
 		ICommand IMainWindowViewmodel.SelectDirectory => SelectDirectory;
 
-		IEnumerable<string> IMainWindowViewmodel.IgnorFileType => IgnorFileType;
+		IEnumerable<string> IMainWindowViewmodel.IgnorFileType { get => IgnorFileType; set => IgnorFileType = value.ToList(); }
 
-		IEnumerable<string> IMainWindowViewmodel.DeleteFileendings => DeleteFileendings;
+		IEnumerable<string> IMainWindowViewmodel.DeleteFileendings { get => DeleteFileendings; set => DeleteFileendings = value.ToList(); }
 
 		#endregion [ Explicit IMainWindowViewmodel ]
 	}

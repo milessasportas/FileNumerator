@@ -23,22 +23,22 @@ namespace FileNumerator.Views
 		/// <summary>
 		/// 
 		/// </summary>
-		int StartNumber { get; }
+		int StartNumber { get; set; }
 
 		/// <summary>
 		/// 
 		/// </summary>
-		int LastNumber { get; }
+		int LastNumber { get; set; }
 
 		/// <summary>
 		/// The to ignored filetyped e.g. .pdf
 		/// </summary>
-		IEnumerable<string> IgnorFileType { get; }
+		IEnumerable<string> IgnorFileType { get; set; }
 
 		/// <summary>
 		/// The to removed fileendings e.g. -final
 		/// </summary>
-		IEnumerable<string> DeleteFileendings { get; }
+		IEnumerable<string> DeleteFileendings { get; set; }
 
 	}
 }

@@ -20,10 +20,14 @@ namespace FileNumerator.Views
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private IMainWindowViewmodel viewmodel;
+
 		public MainWindow(IMainWindowViewmodel vm)
 		{
+			viewmodel = vm;
 			DataContext = vm;
 			InitializeComponent();
 		}
+
 	}
 }
