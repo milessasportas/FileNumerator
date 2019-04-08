@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -126,10 +127,12 @@ namespace FileNumerator.Viewmodels
 
 		public GeneralCommand RenameFiles { get; private set; }
 
-		private bool CanExecuteRenameFilest(object _)
-			=> !string.IsNullOrWhiteSpace(SelectDirectory.SelectedDirectory);
+		/// <param name="directory">Optional directory to use (used for unit testing), else uses the directory specified in SelectDirectory</param>
+		private bool CanExecuteRenameFilest(object directory = null)
+			=> (directory as string == null)? !string.IsNullOrWhiteSpace(SelectDirectory.SelectedDirectory) : Directory.Exists(directory as string);
 
-		private void ExecuteRenameFiles(object _)
+		/// <param name="directory">Optional directory to use (used for unit testing), else uses the directory specified in SelectDirectory</param>
+		private void ExecuteRenameFiles(object directory = null)
 		{
 			throw new NotImplementedException();
 		}
