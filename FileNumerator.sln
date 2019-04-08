@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileNumerator", "FileNumerator\FileNumerator.csproj", "{63DEAE91-8039-4DFB-B35D-08F21050F533}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileNumeratorTests", "FileNumeratorTests\FileNumeratorTests.csproj", "{C1B6BA73-2E69-4EB9-ADE0-6A415E81794E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{63DEAE91-8039-4DFB-B35D-08F21050F533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63DEAE91-8039-4DFB-B35D-08F21050F533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63DEAE91-8039-4DFB-B35D-08F21050F533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1B6BA73-2E69-4EB9-ADE0-6A415E81794E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1B6BA73-2E69-4EB9-ADE0-6A415E81794E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1B6BA73-2E69-4EB9-ADE0-6A415E81794E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1B6BA73-2E69-4EB9-ADE0-6A415E81794E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
