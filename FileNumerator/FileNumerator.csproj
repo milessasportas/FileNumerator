@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\RenamedFile.cs" />
     <Compile Include="Models\FileRenamer.cs" />
     <Compile Include="Viewmodels\MainWindowViewmodel.cs" />
     <Compile Include="Views\IMainWindowViewmodel.cs" />
