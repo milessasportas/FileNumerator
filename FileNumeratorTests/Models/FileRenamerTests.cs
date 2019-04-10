@@ -113,5 +113,23 @@ namespace FileNumeratorTests.Models
 			foreach (var s in actOn)
 				CollectionAssert.DoesNotContain(filtered.ToArray(), s);
 		}
+
+		[TestMethod]
+		public void NothingToFilterTest()
+		{
+			var renamer = generateRenamer();
+			var filtered = renamer.filteredFilesByType(mocFiles);
+			Assert.IsTrue(filtered.Count() == 0);
+		}
+
+		[TestMethod]
+		public void NothingToActOnTest()
+		{
+			var renamer = generateRenamer();
+			renamer.IgnoredFiletypes = new string[] {".dll" };
+			var filtered = renamer.filterFileTyp(mocDllFiles);
+			Assert.IsTrue(filtered.Count() == 0);
+		}
+
 	}
 }
