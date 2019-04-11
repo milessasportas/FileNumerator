@@ -24,6 +24,7 @@ namespace FileNumerator.Viewmodels.Tests
 
 		[TestMethod]
 		[Priority(1)]
+		[Ignore]
 		public void ShowSelectDirectoryTest()
 		{
 			interfaceViewmodel.SelectDirectory.Execute(null);

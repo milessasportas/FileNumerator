@@ -20,8 +20,8 @@ namespace FileNumeratorTests.Models
 		static FileRenamerTests()
 		{
 			_renamer = generateRenamer();
-			_filecount = 15;
-			_dllCount = 6;
+			_filecount = 18;
+			_dllCount = 9;
 			_nonDllCount = _filecount - _dllCount;
 			_renamer.IgnoredFiletypes = new string[] { ".exe", ".config", ".pdb", ".xml"  };
 		}
@@ -70,7 +70,7 @@ namespace FileNumeratorTests.Models
 		public void FilesCountTest()
 		{
 			//manually counted
-			Assert.AreEqual(_renamer.Files.Count, _filecount);
+			Assert.AreEqual(_filecount, _renamer.Files.Count);
 		}
 
 		[TestMethod]
@@ -95,7 +95,7 @@ namespace FileNumeratorTests.Models
 		public void FilterMethodActOn()
 		{
 			var actOn = _renamer.filterFileTyp(mocFiles);
-			CollectionAssert.AreEquivalent(mocFiles, actOn.ToArray());
+			CollectionAssert.AreEquivalent(mocDllFiles, actOn.ToArray());
 		}
 
 		[TestMethod]
@@ -128,7 +128,7 @@ namespace FileNumeratorTests.Models
 			var renamer = generateRenamer();
 			renamer.IgnoredFiletypes = new string[] {".dll" };
 			var filtered = renamer.filterFileTyp(mocDllFiles);
-			Assert.IsTrue(filtered.Count() == 0);
+			Assert.AreEqual(0, filtered.Count());
 		}
 
 	}
