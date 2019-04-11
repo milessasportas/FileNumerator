@@ -17,7 +17,7 @@ namespace FileNumerator.Models
 		/// <param name="directory">The directroy to act on</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory) : this(directory, null)
+		public FileRenamer(string directory) : this(directory, "")
 		{
 
 		}
@@ -29,7 +29,7 @@ namespace FileNumerator.Models
 		/// <param name="fileendingsToRemove">The fileending that shall be deleted from the filename</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, params string[] fileendingsToRemove) : this(directory, fileendingsToRemove, null)
+		public FileRenamer(string directory, params string[] fileendingsToRemove) : this(directory, fileendingsToRemove, "")
 		{
 
 		}
