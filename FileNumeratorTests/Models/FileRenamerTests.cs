@@ -119,7 +119,7 @@ namespace FileNumeratorTests.Models
 		{
 			var renamer = generateRenamer();
 			var filtered = renamer.filteredFilesByType(mocFiles);
-			Assert.IsTrue(filtered.Count() == 0);
+			Assert.AreEqual(0, filtered.Count());
 		}
 
 		[TestMethod]
