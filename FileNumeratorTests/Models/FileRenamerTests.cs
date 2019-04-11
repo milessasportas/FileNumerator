@@ -94,22 +94,22 @@ namespace FileNumeratorTests.Models
 		[TestMethod]
 		public void FilterMethodActOn()
 		{
-			var actOn = _renamer.filterFileTyp(mocFiles);
+			var actOn = _renamer.getFilesFilteredByFileTyp(mocFiles);
 			CollectionAssert.AreEquivalent(mocDllFiles, actOn.ToArray());
 		}
 
 		[TestMethod]
 		public void FilterMethodFiltered()
 		{
-			var filtered = _renamer.filteredFilesByType(mocFiles);
+			var filtered = _renamer.getTheFilteredFilesByType(mocFiles);
 			CollectionAssert.AreEquivalent(mocNonDllFiles, filtered.ToArray());
 		}
 
 		[TestMethod]
 		public void ExclusiveFilterTest()
 		{
-			var actOn = _renamer.filterFileTyp(mocFiles);
-			var filtered = _renamer.filteredFilesByType(mocFiles);
+			var actOn = _renamer.getFilesFilteredByFileTyp(mocFiles);
+			var filtered = _renamer.getTheFilteredFilesByType(mocFiles);
 			foreach (var s in actOn)
 				CollectionAssert.DoesNotContain(filtered.ToArray(), s);
 		}
@@ -118,7 +118,7 @@ namespace FileNumeratorTests.Models
 		public void NothingToFilterTest()
 		{
 			var renamer = generateRenamer();
-			var filtered = renamer.filteredFilesByType(mocFiles);
+			var filtered = renamer.getTheFilteredFilesByType(mocFiles);
 			Assert.AreEqual(0, filtered.Count());
 		}
 
@@ -127,7 +127,7 @@ namespace FileNumeratorTests.Models
 		{
 			var renamer = generateRenamer();
 			renamer.IgnoredFiletypes = new string[] {".dll" };
-			var filtered = renamer.filterFileTyp(mocDllFiles);
+			var filtered = renamer.getFilesFilteredByFileTyp(mocDllFiles);
 			Assert.AreEqual(0, filtered.Count());
 		}
 

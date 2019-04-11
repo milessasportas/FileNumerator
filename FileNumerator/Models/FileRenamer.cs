@@ -139,22 +139,27 @@ namespace FileNumerator.Models
 		/// <summary>
 		/// Filter on Files showing wich Files to act on
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly(filterFileTyp(_files).ToArray());
+		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly(getFilesFilteredByFileTyp(_files).ToArray());
 
 		/// <summary>
 		/// Filter on Files showing wich Files to ignore
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly(filteredFilesByType(_files).ToArray());
+		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly(getTheFilteredFilesByType(_files).ToArray());
 
 		/// <summary>
 		/// A preview of what the new filenames would look like
 		/// </summary>
 		public IReadOnlyCollection<RenamedFile> RenamedFiles => throw new NotFiniteNumberException();
 
-		public IEnumerable<string> filterFileTyp(IEnumerable<string> input)
+		/// <summary>
+		/// Determ
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		public IEnumerable<string> getFilesFilteredByFileTyp(IEnumerable<string> input)
 			=>	input.Where(f => !IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty("");
 
-		public IEnumerable<string> filteredFilesByType(IEnumerable<string> input)
+		public IEnumerable<string> getTheFilteredFilesByType(IEnumerable<string> input)
 			=> input.Where(f => IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty("");
 
 
