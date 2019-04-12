@@ -157,10 +157,10 @@ namespace FileNumerator.Models
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> getFilesFilteredByFileTyp(IEnumerable<string> input)
-			=>	input.Where(f => !IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty("");
+			=> input.Where(f => !IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
 		public IEnumerable<string> getTheFilteredFilesByType(IEnumerable<string> input)
-			=> input.Where(f => IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty("");
+			=> input.Where(f => IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
 
 		#endregion [ Files ]
