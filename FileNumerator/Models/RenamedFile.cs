@@ -1,9 +1,15 @@
-﻿namespace FileNumerator.Models
+﻿using System.IO;
+
+namespace FileNumerator.Models
 {
 	public struct RenamedFile
 	{
-		public string OldName { get; set; }
+		public string OldPath { get; set; }
 
-		public string NewName { get; set; }
+		public string NewPath { get; set; } 
+
+		public string OldName => Path.GetFileName(OldPath) ?? "";
+
+		public string NewName => Path.GetFileName(NewPath) ?? "";
 	}
 }
