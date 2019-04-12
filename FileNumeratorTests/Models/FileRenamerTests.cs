@@ -96,7 +96,7 @@ namespace FileNumeratorTests.Models
 		[TestMethod]
 		public void FilterMethodActOn()
 		{
-			var actOn = _renamer.getFilesFilteredByFileTyp(mocFiles);
+			var actOn = _renamer.GetFittingFilesFilteredByFileTyp(mocFiles);
 			var tmp = actOn.ToArray();
 			CollectionAssert.AreEquivalent(mocDllFiles, actOn.ToArray());
 		}
@@ -104,15 +104,15 @@ namespace FileNumeratorTests.Models
 		[TestMethod]
 		public void FilterMethodFiltered()
 		{
-			var filtered = _renamer.getTheFilteredFilesByType(mocFiles);
+			var filtered = _renamer.GetTheFilteredFilesByFileType(mocFiles);
 			CollectionAssert.AreEquivalent(mocNonDllFiles, filtered.ToArray());
 		}
 
 		[TestMethod]
 		public void ExclusiveFilterTest()
 		{
-			var actOn = _renamer.getFilesFilteredByFileTyp(mocFiles);
-			var filtered = _renamer.getTheFilteredFilesByType(mocFiles);
+			var actOn = _renamer.GetFittingFilesFilteredByFileTyp(mocFiles);
+			var filtered = _renamer.GetTheFilteredFilesByFileType(mocFiles);
 			foreach (var s in actOn)
 				CollectionAssert.DoesNotContain(filtered.ToArray(), s);
 		}
@@ -122,7 +122,7 @@ namespace FileNumeratorTests.Models
 		{
 			//get renamer ignores all but .dll
 			var renamer = generateRenamer();
-			var filtered = renamer.getTheFilteredFilesByType(mocNonDllFiles);
+			var filtered = renamer.GetTheFilteredFilesByFileType(mocNonDllFiles);
 			Assert.AreEqual(mocNonDllFiles.Length, filtered.Count());
 		}
 
@@ -131,7 +131,7 @@ namespace FileNumeratorTests.Models
 		{
 			var renamer = generateRenamer();
 			renamer.FiletypeFilter = new string[] { ".dll" };
-			var filtered = renamer.getFilesFilteredByFileTyp(mocDllFiles);
+			var filtered = renamer.GetFittingFilesFilteredByFileTyp(mocDllFiles);
 			Assert.IsTrue(string.Join("", filtered.ToArray()) == string.Empty);
 		}
 

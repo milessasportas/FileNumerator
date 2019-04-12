@@ -155,12 +155,12 @@ namespace FileNumerator.Models
 		/// <summary>
 		/// Filter on Files showing wich Files to act on
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered? getFilesFilteredByFileTyp(_files) : getTheFilteredFilesByType(_files)).ToArray());
+		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered? GetFittingFilesFilteredByFileTyp(_files) : GetTheFilteredFilesByFileType(_files)).ToArray());
 
 		/// <summary>
 		/// Filter on Files showing wich Files to ignore
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered ? getTheFilteredFilesByType(_files) : getFilesFilteredByFileTyp(_files)).ToArray());
+		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered ? GetTheFilteredFilesByFileType(_files) : GetFittingFilesFilteredByFileTyp(_files)).ToArray());
 
 		/// <summary>
 		/// A preview of what the new filenames would look like
@@ -168,14 +168,19 @@ namespace FileNumerator.Models
 		public IReadOnlyCollection<RenamedFile> RenamedFiles => throw new NotImplementedException();
 
 		/// <summary>
-		/// Determ
+		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
-		public IEnumerable<string> getFilesFilteredByFileTyp(IEnumerable<string> input)
+		public IEnumerable<string> GetFittingFilesFilteredByFileTyp(IEnumerable<string> input)
 			=> input.Where(f => !FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
-		public IEnumerable<string> getTheFilteredFilesByType(IEnumerable<string> input)
+		/// <summary>
+		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		public IEnumerable<string> GetTheFilteredFilesByFileType(IEnumerable<string> input)
 			=> input.Where(f => FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
 
