@@ -91,6 +91,8 @@ namespace FileNumeratorTests.Models
 		private readonly static string[] mocNonDllFiles = { "one.pdf", "two.exe", "fifve.pdb" };
 		private readonly static string[] mocDllFiles =    { "three.dll", "four.dll", };
 
+		#region [ Fiter Test ]
+
 		[TestMethod]
 		public void FilterMethodActOn()
 		{
@@ -128,10 +130,12 @@ namespace FileNumeratorTests.Models
 		public void NothingToActOnTest()
 		{
 			var renamer = generateRenamer();
-			renamer.IgnoredFiletypes = new string[] {".dll" };
+			renamer.IgnoredFiletypes = new string[] { ".dll" };
 			var filtered = renamer.getFilesFilteredByFileTyp(mocDllFiles);
-			Assert.IsTrue(string.Join("", filtered.ToArray()) == string.Empty); 
-		}
+			Assert.IsTrue(string.Join("", filtered.ToArray()) == string.Empty);
+		} 
+
+		#endregion [ Fiter Test ]
 
 	}
 }
