@@ -42,7 +42,7 @@ namespace FileNumerator.Models
 		/// <param name="ignoredFiletypes">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, string[] fileendingsToRemove, params string[] ignoredFiletypes) : this(directory, fileendingsToRemove, ignoredFiletypes, 1)
+		public FileRenamer(string directory, string[] fileendingsToRemove, params string[] ignoredFiletypes) : this(directory, fileendingsToRemove, ignoredFiletypes, FilterType.ExcludeFiltered)
 		{
 
 		}
@@ -52,13 +52,26 @@ namespace FileNumerator.Models
 		/// </summary>
 		/// <param name="directory">The directroy to act on</param>
 		/// <param name="fileendingsToRemove">The fileending that shall be deleted from the filename</param>
-		/// <param name="ignoredFiletypes">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
+		/// <param name="filetypeFilter">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
+		/// <param name="filterType">The way to filter filetypes (only search for the <see cref="ignoredFiletypes"/> or ignore them)</param>
+		/// <exception cref="ArgumentException"/>
+		/// <exception cref="FileNotFoundException"/>
+		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterType filterType) : this(directory, fileendingsToRemove, filetypeFilter, filterType, 1)
+		{
+		}
+
+		/// <summary>
+		/// Renames files in a dirctory
+		/// </summary>
+		/// <param name="directory">The directroy to act on</param>
+		/// <param name="fileendingsToRemove">The fileending that shall be deleted from the filename</param>
+		/// <param name="filetypeFilter">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
+		/// <param name="filterType">The way to filter filetypes (only search for the <see cref="filetypeFilter"/> or ignore them)</param>
 		/// <param name="startNumber">The first number that shall be in the list, defaul 1</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, string[] fileendingsToRemove, string[] ignoredFiletypes, int startNumber) : this(directory, fileendingsToRemove, ignoredFiletypes, startNumber, null)
+		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterType filterType, int startNumber) : this(directory, fileendingsToRemove, filetypeFilter, filterType, startNumber, null)
 		{
-
 		}
 
 		/// <summary>
@@ -66,16 +79,18 @@ namespace FileNumerator.Models
 		/// </summary>
 		/// <param name="directory">The directroy to act on</param>
 		/// <param name="fileendingsToRemove">The fileending that shall be deleted from the filename</param>
-		/// <param name="ignoredFiletypes">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
+		/// <param name="filetypeFilter">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
+		/// <param name="filterType">The way to filter filetypes (only search for the <see cref="filetypeFilter"/> or ignore them)</param>
 		/// <param name="startNumber">The first number that shall be in the list, defaul 1</param>
 		/// <param name="lastNumber">The last number that shall be set, numeration stops when thsi number is reached, deafult null (don't stop)</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, string[] fileendingsToRemove, string[] ignoredFiletypes, int startNumber, int? lastNumber)
+		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterType filterType, int startNumber, int? lastNumber)
 		{
 			DirectoryToActOn = directory;
 			FileEndingsToRemove = fileendingsToRemove;
-			IgnoredFiletypes = ignoredFiletypes;
+			FiletypeFilter = filetypeFilter;
+			FilterType = filterType;
 			StartNumber = startNumber;
 			LastNumber = lastNumber;
 		}
@@ -120,7 +135,9 @@ namespace FileNumerator.Models
 
 		public string[] FileEndingsToRemove { get; set; }
 
-		public string[] IgnoredFiletypes { get; set; }
+		public string[] FiletypeFilter { get; set; }
+
+		public FilterType FilterType { get; set; }
 
 		public int StartNumber { get; set; }
 
@@ -157,14 +174,12 @@ namespace FileNumerator.Models
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> getFilesFilteredByFileTyp(IEnumerable<string> input)
-			=> input.Where(f => !IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
+			=> input.Where(f => !FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
 		public IEnumerable<string> getTheFilteredFilesByType(IEnumerable<string> input)
-			=> input.Where(f => IgnoredFiletypes.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
+			=> input.Where(f => FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
 
 		#endregion [ Files ]
-
-
 	}
 }

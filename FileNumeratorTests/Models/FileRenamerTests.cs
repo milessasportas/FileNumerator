@@ -23,7 +23,7 @@ namespace FileNumeratorTests.Models
 			_filecount = 18;
 			_dllCount = 9;
 			_nonDllCount = _filecount - _dllCount;
-			_renamer.IgnoredFiletypes = new string[] { ".exe", ".config", ".pdb", ".xml", ".pdf" };
+			_renamer.FiletypeFilter = new string[] { ".exe", ".config", ".pdb", ".xml", ".pdf" };
 		}
 
 		/// <summary>
@@ -130,7 +130,7 @@ namespace FileNumeratorTests.Models
 		public void NothingToActOnTest()
 		{
 			var renamer = generateRenamer();
-			renamer.IgnoredFiletypes = new string[] { ".dll" };
+			renamer.FiletypeFilter = new string[] { ".dll" };
 			var filtered = renamer.getFilesFilteredByFileTyp(mocDllFiles);
 			Assert.IsTrue(string.Join("", filtered.ToArray()) == string.Empty);
 		} 
