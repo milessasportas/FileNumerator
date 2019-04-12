@@ -143,7 +143,6 @@ namespace FileNumerator.Models
 
 		public int? LastNumber { get; set; }
 
-
 		#region [ Files ]
 
 		private string[] _files;
@@ -156,17 +155,17 @@ namespace FileNumerator.Models
 		/// <summary>
 		/// Filter on Files showing wich Files to act on
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly(getFilesFilteredByFileTyp(_files).ToArray());
+		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered? getFilesFilteredByFileTyp(_files) : getTheFilteredFilesByType(_files)).ToArray());
 
 		/// <summary>
 		/// Filter on Files showing wich Files to ignore
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly(getTheFilteredFilesByType(_files).ToArray());
+		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered ? getTheFilteredFilesByType(_files) : getFilesFilteredByFileTyp(_files)).ToArray());
 
 		/// <summary>
 		/// A preview of what the new filenames would look like
 		/// </summary>
-		public IReadOnlyCollection<RenamedFile> RenamedFiles => throw new NotFiniteNumberException();
+		public IReadOnlyCollection<RenamedFile> RenamedFiles => throw new NotImplementedException();
 
 		/// <summary>
 		/// Determ

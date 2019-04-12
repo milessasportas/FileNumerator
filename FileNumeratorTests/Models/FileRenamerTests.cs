@@ -133,9 +133,30 @@ namespace FileNumeratorTests.Models
 			renamer.FiletypeFilter = new string[] { ".dll" };
 			var filtered = renamer.getFilesFilteredByFileTyp(mocDllFiles);
 			Assert.IsTrue(string.Join("", filtered.ToArray()) == string.Empty);
-		} 
+		}
 
 		#endregion [ Fiter Test ]
+
+		#region [ FilterTypeTests ]
+
+		[TestMethod]
+		public void FilterInclusive()
+		{
+			var renamer = generateRenamer();
+			renamer.FiletypeFilter = new[] {".dll"};
+			Assert.AreEqual(_nonDllCount, renamer.FilesToIgnore.Count);
+		}
+
+		[TestMethod]
+		public void FilterExclusive()
+		{
+			var renamer = generateRenamer();
+			renamer.FiletypeFilter = new[] { ".dll" };
+			renamer.FilterType = FilterType.IncludeFiltered;
+			Assert.AreEqual(_dllCount, renamer.FilesToIgnore.Count);
+		}
+
+		#endregion [ FilterTypeTests ]
 
 	}
 }
