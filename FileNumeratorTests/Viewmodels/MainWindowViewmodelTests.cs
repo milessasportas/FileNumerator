@@ -21,15 +21,5 @@ namespace FileNumerator.Viewmodels.Tests
 			viewmodel = new MainWindowViewmodel();
 			interfaceViewmodel = viewmodel;
 		}
-
-		[TestMethod]
-		[Priority(1)]
-		[Ignore]
-		public void ShowSelectDirectoryTest()
-		{
-			interfaceViewmodel.SelectDirectory.Execute(null);
-			Assert.IsNotNull(viewmodel.SelectDirectory);
-		}
-
 	}
 }
