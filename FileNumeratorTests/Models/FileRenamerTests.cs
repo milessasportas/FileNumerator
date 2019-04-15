@@ -24,6 +24,7 @@ namespace FileNumeratorTests.Models
 			_dllCount = 9;
 			_nonDllCount = _filecount - _dllCount;
 			_renamer.FiletypeFilter = new string[] { ".exe", ".config", ".pdb", ".xml", ".pdf" };
+			_renamer.FileEndingsToRemove = new string[] { "-part", "-final", "-edit" };
 		}
 
 		/// <summary>
@@ -90,6 +91,8 @@ namespace FileNumeratorTests.Models
 		private readonly static string[] mocFiles = { "one.pdf", "two.exe", "three.dll", "four.dll", "fifve.pdb" };
 		private readonly static string[] mocNonDllFiles = { "one.pdf", "two.exe", "fifve.pdb" };
 		private readonly static string[] mocDllFiles =    { "three.dll", "four.dll", };
+		private readonly static string[] mocFilesFunnyEndings = { "one-final.pdf", "two-part.exe", "three-edit.dll", "four.dll", "fifve.pdb" };
+
 
 		#region [ Fiter Test ]
 
@@ -157,6 +160,24 @@ namespace FileNumeratorTests.Models
 		}
 
 		#endregion [ FilterTypeTests ]
+
+		#region [ RenameTests ]
+
+		[TestMethod]
+		public void RemoveFileEndingsTests()
+		{
+			var result = Array.ConvertAll(mocFilesFunnyEndings, f => _renamer.Rename(f));
+			CollectionAssert.AreEquivalent(mocFiles, result);
+		}
+
+		[TestMethod]
+		public void RemoveFileEndingsCaseInsensitiveTests()
+		{
+			var result = Array.ConvertAll(mocFilesFunnyEndings, f => _renamer.Rename(f.ToUpper()).ToLower());
+			CollectionAssert.AreEquivalent(mocFiles, result);
+		}
+
+		#endregion [ RenameTests ]
 
 	}
 }
