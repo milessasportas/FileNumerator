@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FileNumerator.Models
@@ -78,7 +79,7 @@ namespace FileNumerator.Models
 		/// Renames files in a dirctory
 		/// </summary>
 		/// <param name="directory">The directroy to act on</param>
-		/// <param name="fileendingsToRemove">The fileending that shall be deleted from the filename</param>
+		/// <param name="fileendingsToRemove">The fileending that shall be deleted from the filename (e.g. "-final")</param>
 		/// <param name="filetypeFilter">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
 		/// <param name="filterType">The way to filter filetypes (only search for the <see cref="filetypeFilter"/> or ignore them)</param>
 		/// <param name="startNumber">The first number that shall be in the list, defaul 1</param>
@@ -97,6 +98,8 @@ namespace FileNumerator.Models
 
 		#endregion [ Constructors ]
 
+		#region [ Properties ]
+
 		#region [ DirectoryToActOn ]
 
 		private string _directory;
@@ -114,25 +117,33 @@ namespace FileNumerator.Models
 			}
 			set
 			{
-				//check the directory
-				if (string.IsNullOrEmpty(value))
-					throw new ArgumentException("The directory can't be null or empty.", nameof(DirectoryToActOn));
-				if (!Directory.Exists(value))
-					throw new ArgumentException($"The directory \"´{value}\" doesn't seem to exist.", nameof(DirectoryToActOn));
+				if (_directory != value)
+				{
+					//check the directory
+					if (string.IsNullOrEmpty(value))
+						throw new ArgumentException("The directory can't be null or empty.", nameof(DirectoryToActOn));
+					if (!Directory.Exists(value))
+						throw new ArgumentException($"The directory \"´{value}\" doesn't seem to exist.", nameof(DirectoryToActOn));
 
-				//check if any files exists
-				var files = Directory.GetFiles(value);
-				if (files.Length == 0)
-					throw new FileNotFoundException($"No files found in Directory \"{value}\".");
+					//check if any files exists
+					var files = Directory.GetFiles(value);
+					if (files.Length == 0)
+						throw new FileNotFoundException($"No files found in Directory \"{value}\".");
 
-				//set the fields
-				_files = files;
-				_directory = value;
+					//set the fields
+					_files = files;
+					_directory = value;
+					//reset the renamed files
+					_previewRenamedFiles = null;
+				}
 			}
 		}
 
 		#endregion [ DirectoryToActOn ]
 
+		/// <summary>
+		/// The fileending that shall be deleted from the filename (e.g. "-final")
+		/// </summary>
 		public string[] FileEndingsToRemove { get; set; }
 
 		public string[] FiletypeFilter { get; set; }
@@ -142,8 +153,6 @@ namespace FileNumerator.Models
 		public int StartNumber { get; set; }
 
 		public int? LastNumber { get; set; }
-
-		#region [ Files ]
 
 		private string[] _files;
 
@@ -155,17 +164,57 @@ namespace FileNumerator.Models
 		/// <summary>
 		/// Filter on Files showing wich Files to act on
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered? GetFittingFilesFilteredByFileTyp(_files) : GetTheFilteredFilesByFileType(_files)).ToArray());
+		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered ? GetFittingFilesFilteredByFileTyp(_files) : GetTheFilteredFilesByFileType(_files)).ToArray());
 
 		/// <summary>
 		/// Filter on Files showing wich Files to ignore
 		/// </summary>
 		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered ? GetTheFilteredFilesByFileType(_files) : GetFittingFilesFilteredByFileTyp(_files)).ToArray());
 
+		#region [ PreviewRenamedFiles ]
+
+		private RenamedFile[] _previewRenamedFiles;
+
 		/// <summary>
 		/// A preview of what the new filenames would look like
 		/// </summary>
-		public IReadOnlyCollection<RenamedFile> RenamedFiles => throw new NotImplementedException();
+		public IReadOnlyCollection<RenamedFile> PreviewRenamedFiles
+		{
+			get
+			{
+				//if already computed return the preview
+				if (_previewRenamedFiles != null)	//note: gets reset to null if Directory gets set
+					return _previewRenamedFiles;
+
+				//else compute it
+				//first retrieve the files we shall act on
+				var actOn = Array.ConvertAll(FilesToActOn.ToArray(), f => new FileInfo(f))
+								 //todo: add possibility for other search obtions in methods
+								 .OrderBy(f => f.CreationTimeUtc).
+								 /*Todo: test to see if toarray makes it go faster with large files*/
+								 ToArray();
+				//start the restult
+				RenamedFile[] result = new RenamedFile[actOn.Length];
+
+				//determin the amount of preceeding zeros
+				int preceedingZeros = actOn.Length.ToString().Length;
+
+				//start "reanming" the files
+				for (int i = 0; i < actOn.Length; /*i is inkremented in loop*/ )
+				{
+					var file = actOn[i];
+					result[i].OldPath = actOn[i].FullName;
+					result[i].NewPath = $"{(++i).ToString().PadLeft(preceedingZeros, '0')} - {Rename(actOn[i].FullName)}";
+					//actOn[i].name
+				}
+
+				return Array.AsReadOnly(result);
+			}
+		} 
+
+		#endregion [ PreviewRenamedFiles ]
+
+		#endregion [ Properties ]
 
 		/// <summary>
 		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
@@ -183,7 +232,38 @@ namespace FileNumerator.Models
 		public IEnumerable<string> GetTheFilteredFilesByFileType(IEnumerable<string> input)
 			=> input.Where(f => FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
+		/// <summary>
+		/// Renames the files 
+		/// </summary>
+		public void Rename()
+		{
+			throw new NotImplementedException();
+		}
 
-		#endregion [ Files ]
+		/// <summary>
+		/// Strips the passed filename of any unwanted ending strings
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public string Rename(string file)
+			=> Rename(new FileInfo(file));
+
+		/// <summary>
+		/// Strips the passed filename of any unwanted ending strings
+		/// </summary>
+		/// <param name="file"></param>
+		/// <returns></returns>
+		public string Rename(FileInfo file)
+		{
+			string filenameWithoutEnding = file.NameWithoutFileExtension();
+
+			//maybe regex array to improve speed, could be tested 
+			//e.g. Regex[] replacements = Array.ConvertAll(FileEndingsToRemove, e => new Regex(Regex.Escape(e, RegexOptions.IgnoreCase));
+			foreach (var toremove in FileEndingsToRemove)
+				filenameWithoutEnding = Regex.Replace(filenameWithoutEnding, $"{Regex.Escape(toremove)}$", "", RegexOptions.IgnoreCase);
+
+			return filenameWithoutEnding + file.Extension;
+		}
 	}
+
 }
