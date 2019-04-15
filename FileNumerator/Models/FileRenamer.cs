@@ -117,13 +117,16 @@ namespace FileNumerator.Models
 			}
 			set
 			{
+				//check to see if directory is empty or null
+				if (string.IsNullOrEmpty(value))
+						throw new ArgumentException("The directory can't be null or empty.", nameof(DirectoryToActOn));
+
+				//then reset every only if directory exists
 				if (_directory != value)
 				{
 					//check the directory
-					if (string.IsNullOrEmpty(value))
-						throw new ArgumentException("The directory can't be null or empty.", nameof(DirectoryToActOn));
 					if (!Directory.Exists(value))
-						throw new ArgumentException($"The directory \"´{value}\" doesn't seem to exist.", nameof(DirectoryToActOn));
+						throw new ArgumentException($"The directory \"{value}\" doesn't seem to exist.", nameof(DirectoryToActOn));
 
 					//check if any files exists
 					var files = Directory.GetFiles(value);
