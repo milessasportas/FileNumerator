@@ -204,6 +204,7 @@ namespace FileNumerator.Models
 				{
 					var file = actOn[i];
 					result[i].OldPath = actOn[i].FullName;
+					//explenation: use the index, and display the element counts number and increase it there
 					result[i].NewPath = $"{(++i).ToString().PadLeft(preceedingZeros, '0')} - {Rename(actOn[i].FullName)}";
 					//actOn[i].name
 				}
