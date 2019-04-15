@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\FileInfoExtensions.cs" />
     <Compile Include="Models\FilterType.cs" />
     <Compile Include="Models\RenamedFile.cs" />
     <Compile Include="Models\FileRenamer.cs" />
