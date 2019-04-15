@@ -11,5 +11,8 @@ namespace FileNumerator.Models
 		public string OldName => Path.GetFileName(OldPath) ?? "";
 
 		public string NewName => Path.GetFileName(NewPath) ?? "";
+
+		public override string ToString()
+			=> $"OldPath: \"{OldPath}\" | NewPath: \"{NewPath}\"";
 	}
 }
