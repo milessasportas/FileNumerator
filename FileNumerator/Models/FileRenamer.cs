@@ -209,7 +209,6 @@ namespace FileNumerator.Models
 					result[i].OldPath = actOn[i].FullName;
 					//explenation: use the index, and display the element counts number and increase it there
 					result[i].NewPath = Path.Combine(actOn[i].DirectoryName, $"{(i + 1).ToString().PadLeft(preceedingZeros, '0')} - {Rename(actOn[i].FullName)}");
-					//actOn[i].name
 				}
 
 				return Array.AsReadOnly(result);
@@ -241,7 +240,23 @@ namespace FileNumerator.Models
 		/// </summary>
 		public void Rename()
 		{
-			throw new NotImplementedException();
+			int index = 0;
+			try
+			{
+				//try to rename all the files
+				while(index < PreviewRenamedFiles.Count)
+					File.Move(PreviewRenamedFiles.ElementAt(index).OldPath, PreviewRenamedFiles.ElementAt(index++).NewPath);
+			}
+			catch (Exception ex)
+			{
+				//the  file at position index threw an error --> use the one before that
+				int failedIndex = --index; //-- at start because it gets incremented even when fails
+				//and reset all previous files
+				while(index > 0)
+					File.Move(PreviewRenamedFiles.ElementAt(--index).NewPath, PreviewRenamedFiles.ElementAt(index).OldPath);
+
+				throw new RenameException($"Renaming failed for \"{PreviewRenamedFiles.ElementAt(failedIndex)}\", no filenames where changed. Refer to inner exceotion for further details.", ex);
+			}
 		}
 
 		/// <summary>

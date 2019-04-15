@@ -62,6 +62,7 @@
     <Compile Include="Models\FilterType.cs" />
     <Compile Include="Models\RenamedFile.cs" />
     <Compile Include="Models\FileRenamer.cs" />
+    <Compile Include="Models\RenameException.cs" />
     <Compile Include="Viewmodels\MainWindowViewmodel.cs" />
     <Compile Include="Views\IMainWindowViewmodel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

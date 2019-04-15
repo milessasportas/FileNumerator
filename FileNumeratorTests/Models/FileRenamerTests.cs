@@ -31,7 +31,7 @@ namespace FileNumeratorTests.Models
 		/// Returns a new default renamer instance
 		/// </summary>
 		/// <returns></returns>
-		private static FileRenamer generateRenamer() => new FileRenamer(AppDomain.CurrentDomain.BaseDirectory);
+		private static FileRenamer generateRenamer() => new FileRenamer(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles"));
 
 		#region [ Constructor Tests ]
 
@@ -66,7 +66,7 @@ namespace FileNumeratorTests.Models
 		#endregion [ Constructor Tests ]
 
 		#region [ Files Tests ]
-		
+
 		[TestMethod]
 		public void FilesCountTest()
 		{
@@ -90,7 +90,7 @@ namespace FileNumeratorTests.Models
 
 		private readonly static string[] mocFiles = { "one.pdf", "two.exe", "three.dll", "four.dll", "fifve.pdb" };
 		private readonly static string[] mocNonDllFiles = { "one.pdf", "two.exe", "fifve.pdb" };
-		private readonly static string[] mocDllFiles =    { "three.dll", "four.dll", };
+		private readonly static string[] mocDllFiles = { "three.dll", "four.dll", };
 		private readonly static string[] mocFilesFunnyEndings = { "one-final.pdf", "two-part.exe", "three-edit.dll", "four.dll", "fifve.pdb" };
 
 
@@ -146,7 +146,7 @@ namespace FileNumeratorTests.Models
 		public void FilterInclusive()
 		{
 			var renamer = generateRenamer();
-			renamer.FiletypeFilter = new[] {".dll"};
+			renamer.FiletypeFilter = new[] { ".dll" };
 			Assert.AreEqual(_nonDllCount, renamer.FilesToIgnore.Count);
 		}
 
@@ -177,22 +177,65 @@ namespace FileNumeratorTests.Models
 			CollectionAssert.AreEquivalent(mocFiles, result);
 		}
 
-		#endregion [ RenameTests ]
-
-		#region [ PreviewRenameTests ]
+		[ExpectedException(typeof(RenameException))]
+		[TestMethod]
+		public void LockAFileRenameTest()
+		{
+			//open the file so that only this method can use it
+			using (var stream = File.Open(_renamer.PreviewRenamedFiles.ElementAt(2).OldPath, FileMode.Open, FileAccess.Read, FileShare.None))
+			{
+				//try to rename all files
+				_renamer.Rename();
+			}
+		}
 
 		[TestMethod]
-		public void Foo()
+		public void RenameSucceed()
 		{
-			var files = _renamer.PreviewRenamedFiles.ToArray();
-			var renamedNames = _renamer.PreviewRenamedFiles.Select(p => p.NewPath).ToArray();
+			//rename the files
+			_renamer.Rename();
+			//analyse the renamed files
+			var checkRenamer = generateRenamer();
+			checkRenamer.FilterType = FilterType.IncludeFiltered;
+			checkRenamer.FiletypeFilter = new string[] { ".dll" };
+
+			Action<RenamedFile> reset = f => File.Move(f.NewPath, f.OldPath);
+			try
+			{
+				var filesnmes = expectedFilenames(_renamer.PreviewRenamedFiles.ToArray());
+				CollectionAssert.AreEquivalent(filesnmes, checkRenamer.FilesToActOn.ToArray());
+			}
+			finally
+			{
+				//reset the progress 
+				foreach (var file in _renamer.PreviewRenamedFiles)
+					reset(file);
+			}
+		}
+
+		#endregion [ RenameTests ]
+
+		private List<string> expectedFilenames(RenamedFile[] files)
+		{
 			var expectedResult = new List<string>(files.Length);
 			for (int i = 0; i < files.Length; i++)
 			{
 				FileInfo f = new FileInfo(files[i].OldPath);
 				expectedResult.Add($"{f.DirectoryName}\\{i + 1} - {f.Name}");
 			}
-			CollectionAssert.AreEqual(expectedResult, renamedNames);
+
+			return expectedResult;
+		}
+
+		#region [ PreviewRenameTests ]
+
+		[TestMethod]
+		public void TestGeneratedNames()
+		{
+			var files = _renamer.PreviewRenamedFiles.ToArray();
+			var renamedNames = _renamer.PreviewRenamedFiles.Select(p => p.NewPath).ToArray();
+
+			CollectionAssert.AreEqual(expectedFilenames(files), renamedNames);
 		}
 
 		#endregion [ PreviewRenameTests ]
