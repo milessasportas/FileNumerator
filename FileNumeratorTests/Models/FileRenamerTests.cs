@@ -179,5 +179,22 @@ namespace FileNumeratorTests.Models
 
 		#endregion [ RenameTests ]
 
+		#region [ PreviewRenameTests ]
+
+		[TestMethod]
+		public void Foo()
+		{
+			var files = _renamer.PreviewRenamedFiles.ToArray();
+			var renamedNames = _renamer.PreviewRenamedFiles.Select(p => p.NewPath).ToArray();
+			var expectedResult = new List<string>(files.Length);
+			for (int i = 0; i < files.Length; i++)
+			{
+				FileInfo f = new FileInfo(files[i].OldPath);
+				expectedResult.Add($"{f.DirectoryName}\\{i + 1} - {f.Name}");
+			}
+			CollectionAssert.AreEqual(expectedResult, renamedNames);
+		}
+
+		#endregion [ PreviewRenameTests ]
 	}
 }

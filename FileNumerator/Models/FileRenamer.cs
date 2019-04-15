@@ -121,7 +121,7 @@ namespace FileNumerator.Models
 				if (string.IsNullOrEmpty(value))
 						throw new ArgumentException("The directory can't be null or empty.", nameof(DirectoryToActOn));
 
-				//then reset every only if directory exists
+				//then reset everything only if directory exists
 				if (_directory != value)
 				{
 					//check the directory
@@ -203,12 +203,12 @@ namespace FileNumerator.Models
 				int preceedingZeros = actOn.Length.ToString().Length;
 
 				//start "reanming" the files
-				for (int i = 0; i < actOn.Length; /*i is inkremented in loop*/ )
+				for (int i = 0; i < actOn.Length;  i++ )
 				{
 					var file = actOn[i];
 					result[i].OldPath = actOn[i].FullName;
 					//explenation: use the index, and display the element counts number and increase it there
-					result[i].NewPath = $"{(++i).ToString().PadLeft(preceedingZeros, '0')} - {Rename(actOn[i].FullName)}";
+					result[i].NewPath = Path.Combine(actOn[i].DirectoryName, $"{(i + 1).ToString().PadLeft(preceedingZeros, '0')} - {Rename(actOn[i].FullName)}");
 					//actOn[i].name
 				}
 
