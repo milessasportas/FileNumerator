@@ -238,6 +238,7 @@ namespace FileNumerator.Models
 		/// <summary>
 		/// Renames the files 
 		/// </summary>
+		/// <exception cref="RenameException"/>
 		public void Rename()
 		{
 			int index = 0;
@@ -250,12 +251,39 @@ namespace FileNumerator.Models
 			catch (Exception ex)
 			{
 				//the  file at position index threw an error --> use the one before that
-				int failedIndex = --index; //-- at start because it gets incremented even when fails
+				int failedIndex = --index; //-- at start because index gets incremented even when exception is thrown
+				List<RenamedFile> failedResettFiles = new List<RenamedFile>();
+
 				//and reset all previous files
 				while(index > 0)
-					File.Move(PreviewRenamedFiles.ElementAt(--index).NewPath, PreviewRenamedFiles.ElementAt(index).OldPath);
+				{
+					try
+					{
+						File.Move(PreviewRenamedFiles.ElementAt(--index).NewPath, PreviewRenamedFiles.ElementAt(index).OldPath);
+					}
+					catch (Exception)
+					{
+						failedResettFiles.Add(PreviewRenamedFiles.ElementAt(index + 1);
+					}
+				}
 
-				throw new RenameException($"Renaming failed for \"{PreviewRenamedFiles.ElementAt(failedIndex)}\", no filenames where changed. Refer to inner exceotion for further details.", ex);
+				//build the exception message
+				var exeptionMessageBuilder = new StringBuilder();
+				if(failedResettFiles.Count > 0)
+				{
+					bool multiple/*Failed*/ = failedResettFiles.Count > 1;
+					exeptionMessageBuilder.AppendLine($"Renaming failed for \"{PreviewRenamedFiles.ElementAt(failedIndex)}\".");
+					exeptionMessageBuilder.AppendLine($"The following file{(multiple? "s": "")} couldn't be reset to {(multiple? "their" : "it's")} original name: \"{string.Join("\", \"", failedResettFiles)}\"");
+					exeptionMessageBuilder.Append("Refer to inner exceotion for further details.");
+				}
+				else
+					exeptionMessageBuilder.Append($"Renaming failed for \"{PreviewRenamedFiles.ElementAt(failedIndex)}\", no filenames where changed. Refer to inner exceotion for further details.");
+
+
+				throw new RenameException(
+					exeptionMessageBuilder.ToString(),
+					ex
+				) { FailedFile = PreviewRenamedFiles.ElementAt(failedIndex).OldPath };
 			}
 		}
 

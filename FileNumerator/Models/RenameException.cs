@@ -6,6 +6,11 @@ namespace FileNumerator.Models
 	[Serializable]
 	internal class RenameException : Exception
 	{
+		/// <summary>
+		/// File which couldn't be renamed
+		/// </summary>
+		public string FailedFile { get; set; }
+
 		public RenameException()
 		{
 		}
