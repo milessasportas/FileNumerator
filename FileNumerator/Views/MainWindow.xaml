@@ -5,10 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:FileNumerator.Viewmodels"
         xmlns:local="clr-namespace:FileNumerator.Views"
-        d:DataContext="{d:DesignData Type=local:IMainWindowViewmodel, IsDesignTimeCreatable=False}"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewmodel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <GroupBox Header="Fileextension settings" >
+                <Grid MinHeight="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="File Search mode"/>
+                        <ListView ItemsSource="{Binding Path=DeleteFileendings}"/>
+                    </StackPanel>
+                    <GroupBox Header="Some" Grid.Column="1">
+
+                    </GroupBox>
+                </Grid>
+            </GroupBox>
+            <Label>Ignore Fileextensions:</Label>
+            <TextBox TextWrapping="Wrap" MinHeight="40"></TextBox>
+            <Label>Delete From fileending</Label>
+            <TextBox TextWrapping="Wrap" MinHeight="40"></TextBox>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <Label>Start Number</Label>
+                    <TextBox Text="{Binding Path=StartNumber}"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label>End Number</Label>
+                    <TextBox Text="{Binding Path=LastNumber}"/>
+                </StackPanel>
+            </StackPanel>
+            <Grid>
+                <Button Command="{Binding SelectDirectory}" HorizontalAlignment="Left" Content="Select Directory"/>
+                <Button Command="{Binding RenameFiles}" HorizontalAlignment="Right" Content="Start"/>
+            </Grid>
+        </StackPanel>
+
     </Grid>
 </Window>
