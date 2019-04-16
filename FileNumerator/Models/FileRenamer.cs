@@ -263,7 +263,7 @@ namespace FileNumerator.Models
 					}
 					catch (Exception)
 					{
-						failedResettFiles.Add(PreviewRenamedFiles.ElementAt(index + 1);
+						failedResettFiles.Add(PreviewRenamedFiles.ElementAt(index + 1));
 					}
 				}
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileNumerator.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -40,5 +41,9 @@ namespace FileNumerator.Views
 		/// </summary>
 		IEnumerable<string> DeleteFileendings { get; set; }
 
+		/// <summary>
+		/// T
+		/// </summary>
+		FilterType FilterType { get; set; }
 	}
 }
