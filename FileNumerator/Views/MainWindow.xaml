@@ -20,7 +20,7 @@
                         <TextBlock Text="File Search mode"/>
                         <ListView ItemsSource="{Binding Path=DeleteFileendings}"/>
                     </StackPanel>
-                    <GroupBox Header="Some" Grid.Column="1">
+                    <GroupBox Header="Some" Grid.Column="1" Style="{DynamicResource GroupboxHeadderBottomRight}">
 
                     </GroupBox>
                 </Grid>
