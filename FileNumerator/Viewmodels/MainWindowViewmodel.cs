@@ -150,12 +150,24 @@ namespace FileNumerator.Viewmodels
                 if (_renamer.DirectoryToActOn != value)
                 {
                     _renamer.DirectoryToActOn = value;
-                    RaisePropertyChanged(nameof(WorkingDirectory));
+                    RaisePropertyChanged(
+                        nameof(WorkingDirectory),
+                        nameof(FoundFiles),
+                        nameof(FilesToActOn),
+                        nameof(ResultingFilenames)
+                    );
                 }
             }
         }
 
         #endregion [ WorkingDirectory ] 
+
+        public IEnumerable<string> FoundFiles => _renamer.Files;
+        
+        public IEnumerable<string> FilesToActOn => _renamer.FilesToActOn;
+
+        public IEnumerable<string> ResultingFilenames => _renamer.PreviewRenamedFiles.Select(f => f.NewPath);
+
 
         #endregion [ Properties ]
 
@@ -194,5 +206,12 @@ namespace FileNumerator.Viewmodels
 		IEnumerable<string> IMainWindowViewmodel.DeleteFileendings { get => DeleteFileendings; set => DeleteFileendings = value.ToArray(); }
 
         #endregion [ Explicit IMainWindowViewmodel ]
+
+        /// <summary>
+        /// Raises the proeprty changed event for all passed properties
+        /// </summary>
+        /// <param name="properties"></param>
+        public void RaisePropertyChanged(params string[] properties)
+            => Array.ForEach(properties, p => base.RaisePropertyChanged(p));
     }
 }

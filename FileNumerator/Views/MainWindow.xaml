@@ -13,7 +13,10 @@
             <GroupBox Header="Files">
                 <DockPanel>
                     <Button Content="Select Directory" HorizontalAlignment="Center" Padding="10,0" Margin="0,0,0,5" Command="{Binding SelectDirectory}" DockPanel.Dock="Top"/>
-
+                    <GroupBox Header="Found Files" DockPanel.Dock="Top" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                        <ListView ItemsSource="{Binding FoundFiles}"/>
+                        <!--Todo: center listviewitems-->
+                    </GroupBox>
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
@@ -28,14 +31,14 @@
                         <GroupBox Grid.Row="0" Grid.Column="0" Header="Startnumber" HorizontalAlignment="Right" Style="{DynamicResource GroupboxHeadderBottomRight}">
                             <TextBox Text="{Binding Path=StartNumber}"/>
                         </GroupBox>
-                        <GroupBox Grid.Row="0" Grid.Column="1" Header="Startnumber" HorizontalAlignment="Left" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                        <GroupBox Grid.Row="0" Grid.Column="1" Header="Lastnumber" HorizontalAlignment="Left" Style="{DynamicResource GroupboxHeadderBottomRight}">
                             <TextBox Text="{Binding Path=LastNumber}"/>
                         </GroupBox>
                         
                         <GroupBox Grid.Row="1" Grid.Column="0" Header="Found Files" MinWidth="{Binding ElementName=PreviewFilesnames, Path=ActualWidth}" Style="{DynamicResource GroupboxHeadderBottomRight}">
                             <ListView ItemsSource="{Binding Path=todo}" MinHeight="40" BorderThickness="0"/>
                         </GroupBox>
-                        <GroupBox Grid.Row="1" Grid.Column="1" Name="PreviewFilesnames" Header="Preview Filenames" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                        <GroupBox Grid.Row="1" Grid.Column="1" Name="PreviewFiles" Header="Preview Result" Style="{DynamicResource GroupboxHeadderBottomRight}">
                             <ListView ItemsSource="{Binding Path=todo}" BorderThickness="0"/>
                         </GroupBox>
                     </Grid>
