@@ -7,9 +7,40 @@
         xmlns:local="clr-namespace:FileNumerator.Views"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewmodel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" MinHeight="450" Height="450" MinWidth="300" Width="300">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <GroupBox Header="Files">
+                <DockPanel>
+                    <Button Content="Select Directory" HorizontalAlignment="Center" Padding="10,0" Margin="0,0,0,5" Command="{Binding SelectDirectory}" DockPanel.Dock="Top"/>
+
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
+                        <!--Number selection-->
+                        <GroupBox Grid.Row="0" Grid.Column="0" Header="Startnumber" HorizontalAlignment="Right" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                            <TextBox Text="{Binding Path=StartNumber}"/>
+                        </GroupBox>
+                        <GroupBox Grid.Row="0" Grid.Column="1" Header="Startnumber" HorizontalAlignment="Left" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                            <TextBox Text="{Binding Path=LastNumber}"/>
+                        </GroupBox>
+                        
+                        <GroupBox Grid.Row="1" Grid.Column="0" Header="Found Files" MinWidth="{Binding ElementName=PreviewFilesnames, Path=ActualWidth}" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                            <ListView ItemsSource="{Binding Path=todo}" MinHeight="40" BorderThickness="0"/>
+                        </GroupBox>
+                        <GroupBox Grid.Row="1" Grid.Column="1" Name="PreviewFilesnames" Header="Preview Filenames" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                            <ListView ItemsSource="{Binding Path=todo}" BorderThickness="0"/>
+                        </GroupBox>
+                    </Grid>
+                </DockPanel>
+            </GroupBox>
             <GroupBox Header="Fileextension settings" >
                 <Grid MinHeight="40">
                     <Grid.ColumnDefinitions>
@@ -21,27 +52,19 @@
                         <ListView ItemsSource="{Binding Path=DeleteFileendings}"/>
                     </StackPanel>
                     <GroupBox Header="Some" Grid.Column="1" Style="{DynamicResource GroupboxHeadderBottomRight}">
-
+                        <TextBox Margin="0" Padding="0" BorderThickness="0" Text="Text"/>
                     </GroupBox>
                 </Grid>
             </GroupBox>
-            <Label>Ignore Fileextensions:</Label>
-            <TextBox TextWrapping="Wrap" MinHeight="40"></TextBox>
+            <GroupBox Header="Fileendings to remove">
+                <TextBox>
+                    
+                </TextBox>
+            </GroupBox>
             <Label>Delete From fileending</Label>
             <TextBox TextWrapping="Wrap" MinHeight="40"></TextBox>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel>
-                    <Label>Start Number</Label>
-                    <TextBox Text="{Binding Path=StartNumber}"/>
-                </StackPanel>
-                <StackPanel>
-                    <Label>End Number</Label>
-                    <TextBox Text="{Binding Path=LastNumber}"/>
-                </StackPanel>
-            </StackPanel>
             <Grid>
-                <Button Command="{Binding SelectDirectory}" HorizontalAlignment="Left" Content="Select Directory"/>
-                <Button Command="{Binding RenameFiles}" HorizontalAlignment="Right" Content="Start"/>
+                <Button Command="{Binding RenameFiles}" HorizontalAlignment="Center" Padding="20,0" Content="Rename"/>
             </Grid>
         </StackPanel>
 

@@ -29,7 +29,7 @@ namespace FileNumerator.Views
 		/// <summary>
 		/// 
 		/// </summary>
-		int LastNumber { get; set; }
+		int? LastNumber { get; set; }
 
 		/// <summary>
 		/// The to ignored filetyped e.g. .pdf

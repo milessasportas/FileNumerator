@@ -7,6 +7,9 @@ using WpfHelperLibrary.Commands;
 
 namespace FileNumerator.Commands
 {
+    /// <summary>
+    /// Adds the DirectorySelected event
+    /// </summary>
     public class OpenDirectroyCommandWithNotification : OpenDirectoryCommand
     {
         public override string SelectedDirectory
