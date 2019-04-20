@@ -7,22 +7,47 @@
         xmlns:local="clr-namespace:FileNumerator.Views"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewmodel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="450" Height="450" MinWidth="300" Width="300">
+        Title="MainWindow" MinHeight="550" Height="550" MinWidth="420" Width="420">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <GroupBox Header="Files">
+            <GroupBox Header="Files" MinWidth="322" >
                 <DockPanel>
                     <Button Content="Select Directory" HorizontalAlignment="Center" Padding="10,0" Margin="0,0,0,5" Command="{Binding SelectDirectory}" DockPanel.Dock="Top"/>
-                    <GroupBox Header="Found Files" DockPanel.Dock="Top" Style="{DynamicResource GroupboxHeadderBottomRight}">
-                        <ListView ItemsSource="{Binding FoundFiles}"/>
+                    <GroupBox Header="Found Files" DockPanel.Dock="Top">
+                        <ListView ItemsSource="{Binding FoundFiles}" BorderThickness="0"/>
                         <!--Todo: center listviewitems-->
                     </GroupBox>
-                    <Grid DockPanel.Dock="Bottom">
+                    <GroupBox Header="Filter by Extension" DockPanel.Dock="Top" >
+                        <Grid MinHeight="40">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <!--<StackPanel Grid.Column="0">
+                                <TextBlock Text="File Search mode"/>
+                                <ListView ItemsSource="{Binding Path=DeleteFileendings}"/>
+                            </StackPanel>-->
+                            <GroupBox Header="File search mode" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                                <ListView ItemsSource="{Binding DeleteFileendings}" SelectedItem="{Binding FilterType}"/>
+                            </GroupBox>
+                            <GroupBox Header="Filter result" Grid.Column="1" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                                <!--Todo: change headder according to filter result-->
+                                <GroupBox.ToolTip>
+                                    <TextBlock>Select which filextensions to remove</TextBlock>
+                                </GroupBox.ToolTip>
+                                <CheckBox Margin="0" Padding="0" BorderThickness="0" Content="Text"/>
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
+
+
+                    <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition/>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
@@ -34,41 +59,22 @@
                         <GroupBox Grid.Row="0" Grid.Column="1" Header="Lastnumber" HorizontalAlignment="Left" Style="{DynamicResource GroupboxHeadderBottomRight}">
                             <TextBox Text="{Binding Path=LastNumber}"/>
                         </GroupBox>
-                        
-                        <GroupBox Grid.Row="1" Grid.Column="0" Header="Found Files" MinWidth="{Binding ElementName=PreviewFilesnames, Path=ActualWidth}" Style="{DynamicResource GroupboxHeadderBottomRight}">
-                            <ListView ItemsSource="{Binding Path=todo}" MinHeight="40" BorderThickness="0"/>
+
+                        <GroupBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Header="Fileending to remove" HorizontalAlignment="Center" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                            <TextBox MinHeight="40" MinWidth="40" ></TextBox>
                         </GroupBox>
-                        <GroupBox Grid.Row="1" Grid.Column="1" Name="PreviewFiles" Header="Preview Result" Style="{DynamicResource GroupboxHeadderBottomRight}">
-                            <ListView ItemsSource="{Binding Path=todo}" BorderThickness="0"/>
+                        
+                        <GroupBox Grid.Row="2" Grid.Column="0" Header="Files to Rename" Width="{Binding ElementName=PreviewFilesnames, Path=ActualWidth}" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                            <ListView ItemsSource="{Binding Path=FilesToActOn}" MinHeight="40" BorderThickness="0"/>
+                        </GroupBox>
+                        <GroupBox Grid.Row="2" Grid.Column="1" Name="PreviewFiles" Header="Preview renaming result" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                            <ListView ItemsSource="{Binding Path=ResultingFilenames}" BorderThickness="0"/>
                         </GroupBox>
                     </Grid>
+                    <Button DockPanel.Dock="Top" Command="{Binding RenameFiles}" HorizontalAlignment="Center" Margin="0,10" Padding="20,0" Content="Rename"/>
+
                 </DockPanel>
             </GroupBox>
-            <GroupBox Header="Fileextension settings" >
-                <Grid MinHeight="40">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="File Search mode"/>
-                        <ListView ItemsSource="{Binding Path=DeleteFileendings}"/>
-                    </StackPanel>
-                    <GroupBox Header="Some" Grid.Column="1" Style="{DynamicResource GroupboxHeadderBottomRight}">
-                        <TextBox Margin="0" Padding="0" BorderThickness="0" Text="Text"/>
-                    </GroupBox>
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="Fileendings to remove">
-                <TextBox>
-                    
-                </TextBox>
-            </GroupBox>
-            <Label>Delete From fileending</Label>
-            <TextBox TextWrapping="Wrap" MinHeight="40"></TextBox>
-            <Grid>
-                <Button Command="{Binding RenameFiles}" HorizontalAlignment="Center" Padding="20,0" Content="Rename"/>
-            </Grid>
         </StackPanel>
 
     </Grid>
