@@ -67,7 +67,7 @@
                         <GroupBox Grid.Row="2" Grid.Column="0" Header="Files to Rename" Width="{Binding ElementName=PreviewFilesnames, Path=ActualWidth}" Style="{DynamicResource GroupboxHeadderBottomRight}">
                             <ListView ItemsSource="{Binding Path=FilesToActOn}" MinHeight="40" BorderThickness="0"/>
                         </GroupBox>
-                        <GroupBox Grid.Row="2" Grid.Column="1" Name="PreviewFiles" Header="Preview renaming result" Style="{DynamicResource GroupboxHeadderBottomRight}">
+                        <GroupBox Grid.Row="2" Grid.Column="1" Name="PreviewFiles" Header="Preview renaming result" Style="{DynamicResource GroupboxHeadderBottomRight}" >
                             <ListView ItemsSource="{Binding Path=ResultingFilenames}" BorderThickness="0"/>
                         </GroupBox>
                     </Grid>

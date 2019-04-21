@@ -227,6 +227,9 @@ namespace FileNumerator.Models
 		public IEnumerable<string> GetFittingFilesFilteredByFileTyp(IEnumerable<string> input)
 			=> input.Where(f => !FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
 
+        private IEnumerable<T> returnEmptyArrayIfPassedArrayIsEmptyOrFilledOnlyWithDefaultValues<T>(IEnumerable<T> enumerable)
+            => (enumerable.Count() == 1 && enumerable.All(v => v.Equals(default(T))))? new T[0] : enumerable;
+
 		/// <summary>
 		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
 		/// </summary>
