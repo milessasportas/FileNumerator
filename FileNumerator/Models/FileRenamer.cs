@@ -225,10 +225,20 @@ namespace FileNumerator.Models
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> GetFittingFilesFilteredByFileTyp(IEnumerable<string> input)
-			=> input.Where(f => !FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
+			=>  returnEmptyArrayIfPassedArrayIsEmptyOrFilledOnlyWithDefaultValues(
+                input.Where(f => !FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty());
 
+        /// <summary>
+        /// Test if the passed enumerable has any elements or only default values.<para/>
+        /// Returns an empty array.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <returns></returns>
         private IEnumerable<T> returnEmptyArrayIfPassedArrayIsEmptyOrFilledOnlyWithDefaultValues<T>(IEnumerable<T> enumerable)
-            => (enumerable.Count() == 1 && enumerable.All(v => v.Equals(default(T))))? new T[0] : enumerable;
+            => (enumerable.Count() == 0 || enumerable.All(v => v.Equals(default(T))))? new T[0] : enumerable;
+
+
 
 		/// <summary>
 		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
@@ -236,7 +246,8 @@ namespace FileNumerator.Models
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> GetTheFilteredFilesByFileType(IEnumerable<string> input)
-			=> input.Where(f => FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty);
+			=> returnEmptyArrayIfPassedArrayIsEmptyOrFilledOnlyWithDefaultValues(
+                input.Where(f => FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty));
 
 		/// <summary>
 		/// Renames the files 
