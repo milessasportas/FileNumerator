@@ -87,19 +87,19 @@
                         </GroupBox>
                         
                         <GroupBox Grid.Row="2" Grid.Column="0" Header="Files to Rename" Width="{Binding ElementName=PreviewFilesnames, Path=ActualWidth}" Style="{DynamicResource GroupboxHeadderBottomRight}">
-                            <ListView ItemsSource="{Binding Path=FilesToActOn}" MinHeight="40">
+                            <ListView Name="FilesToActOn" ItemsSource="{Binding Path=FilesToActOn}" MinHeight="40" SelectionChanged="ListView_UpdateSelectedItem">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock ToolTip="{Binding }" Text="{Binding  Converter={StaticResource DirectoryPathRemover}}"/>
+                                        <TextBlock ToolTip="{Binding }" Text="{Binding  Converter={StaticResource DirectoryPathRemover}}" Padding="5,0"/>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
                         </GroupBox>
                         <GroupBox Grid.Row="2" Grid.Column="1" Name="PreviewFiles" Header="Preview renaming result" Style="{DynamicResource GroupboxHeadderBottomRight}" >
-                            <ListView ItemsSource="{Binding Path=ResultingFilenames}">
+                            <ListView ItemsSource="{Binding Path=ResultingFilenames}" SelectedIndex="{Binding ElementName=FilesToActOn, Path=SelectedIndex, Mode=TwoWay}" SelectionChanged="ListView_UpdateSelectedItem">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock ToolTip="{Binding }" Text="{Binding  Converter={StaticResource DirectoryPathRemover}}"/>
+                                        <TextBlock ToolTip="{Binding }" Text="{Binding  Converter={StaticResource DirectoryPathRemover}}" Padding="5,0"/>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>

@@ -44,5 +44,12 @@ namespace FileNumerator.Views
         {
             viewmodel.FileExtensionFilter.Remove((sender as CheckBox).Content.ToString());
         }
+
+        private void ListView_UpdateSelectedItem(object sender, SelectionChangedEventArgs e)
+        {
+            var listview = sender as ListView;
+            listview.ScrollIntoView(listview.SelectedItem);
+
+        }
     }
 }
