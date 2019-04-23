@@ -55,7 +55,10 @@ namespace FileNumerator.Viewmodels
 				if (_renamer.StartNumber != value)
 				{
 					_renamer.StartNumber = value;
-					RaisePropertyChanged(nameof(StartNumber));
+					RaisePropertyChanged(
+                        nameof(StartNumber),
+                        nameof(ResultingFilenames)
+                    );
 				}
 			}
 		}

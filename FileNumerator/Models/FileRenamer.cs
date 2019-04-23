@@ -92,7 +92,7 @@ namespace FileNumerator.Models
 			FileEndingsToRemove = fileendingsToRemove;
 			FileExtensionFilter = filetypeFilter;
 			FilterType = filterType;
-			StartNumber = startNumber;
+			_startNumber = startNumber;
 			LastNumber = lastNumber;
 		}
 
@@ -155,10 +155,21 @@ namespace FileNumerator.Models
 		public string[] FileExtensionFilter { get; set; }
 
 		public FilterMode FilterType { get; set; }
+		
+        private int _startNumber;
 
-		public int StartNumber { get; set; }
+        public int StartNumber
+        {
+            get { return _startNumber; }
+            set
+            {
+                _startNumber = value;
+                _previewRenamedFiles = null;
+            }
+        }
 
-		public int? LastNumber { get; set; }
+
+        public int? LastNumber { get; set; }
 
 		private string[] _files;
 
@@ -210,8 +221,7 @@ namespace FileNumerator.Models
 				{
 					var file = actOn[i];
 					result[i].OldPath = actOn[i].FullName;
-					//explenation: use the index, and display the element counts number and increase it there
-					result[i].NewPath = Path.Combine(actOn[i].DirectoryName, $"{(i + 1).ToString().PadLeft(preceedingZeros, '0')} - {Rename(actOn[i].FullName)}");
+					result[i].NewPath = Path.Combine(actOn[i].DirectoryName, $"{(i + StartNumber).ToString().PadLeft(preceedingZeros, '0')} - {Rename(actOn[i].FullName)}");
 				}
 
 				return Array.AsReadOnly(result);
