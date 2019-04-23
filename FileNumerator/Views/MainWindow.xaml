@@ -38,7 +38,7 @@
                                 <ListView ItemsSource="{Binding Path=DeleteFileendings}"/>
                             </StackPanel>-->
                             <GroupBox Header="File search mode" Style="{DynamicResource GroupboxHeadderBottomRight}">
-                                <ListView ItemsSource="{Binding DeleteFileendings}" SelectedItem="{Binding FilterType}"/>
+                                <ListView ItemsSource="{Binding PossibleFilters}" SelectedItem="{Binding FilterType}" BorderThickness="0"/>
                             </GroupBox>
                             <GroupBox Header="Filter result" Grid.Column="1" Style="{DynamicResource GroupboxHeadderBottomRight}">
                                 <!--Todo: change headder according to filter result-->

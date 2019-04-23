@@ -138,6 +138,9 @@ namespace FileNumerator.Viewmodels
 
         #endregion [ FilterType ] 
 
+        public IEnumerable<FilterMode> PossibleFilters => Array.ConvertAll(Enum.GetNames(typeof(FilterMode)), f => (FilterMode) Enum.Parse(typeof(FilterMode), f));
+
+
         #region [ WorkingDirectory ]
 
         public string WorkingDirectory
