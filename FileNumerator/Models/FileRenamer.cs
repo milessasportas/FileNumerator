@@ -129,12 +129,15 @@ namespace FileNumerator.Models
 						throw new ArgumentException($"The directory \"{value}\" doesn't seem to exist.", nameof(DirectoryToActOn));
 
 					//check if any files exists
-					var files = Directory.GetFiles(value);
+					var files = Directory.GetFiles(value, "*.*", SearchOption.AllDirectories /*todo make selection*/);
 					if (files.Length == 0)
 						throw new FileNotFoundException($"No files found in Directory \"{value}\".");
 
+                    /*todo: not only by date*/
+                    var filesOrderdByDate = files.Select(f => new FileInfo(f)).OrderBy(fi => fi.CreationTime);
+
 					//set the fields
-					_files = files;
+					_files = filesOrderdByDate.Select(f => f.FullName).ToArray();
 					_directory = value;
 					//reset the renamed files
 					_previewRenamedFiles = null;
