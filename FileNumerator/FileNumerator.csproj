@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\OpenDirectroyCommandWithNotification.cs" />
     <Compile Include="Converters\FilepathRemover.cs" />
+    <Compile Include="Converters\IncludeExcludeFileExtension.cs" />
     <Compile Include="Models\FileInfoExtensions.cs" />
     <Compile Include="Models\FilterMode.cs" />
     <Compile Include="Models\RenamedFile.cs" />
