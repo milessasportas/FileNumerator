@@ -56,8 +56,13 @@ namespace FileNumerator.Views
         /// </summary>
         IEnumerable<string> ResultingFilenames { get; }
 
+        /// <summary>
+        /// List of possible filters
+        /// </summary>
+        IEnumerable<FilterType> PossibleFilters { get; }
+
 		/// <summary>
-		/// T
+		/// The selcted Filtermode
 		/// </summary>
 		FilterType FilterType { get; set; }
 	}
