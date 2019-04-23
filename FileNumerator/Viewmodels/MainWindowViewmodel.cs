@@ -181,7 +181,20 @@ namespace FileNumerator.Viewmodels
 
 		/// <param name="directory">Optional directory to use (used for unit testing), else uses the directory specified in <see cref="WorkingDirectory"/></param>
 		private bool CanExecuteRenameFilest(object directory = null)
-			=> (directory as string == null)? !string.IsNullOrWhiteSpace(SelectDirectory.SelectedDirectory) : Directory.Exists(directory as string);
+        {
+            try
+            {
+                return (directory as string == null) ? 
+                    !string.IsNullOrWhiteSpace(SelectDirectory.SelectedDirectory) : 
+                    Directory.Exists(directory as string)
+                ;
+            }
+            catch (DirectoryNotSelectedException)
+            {
+                return false;
+            }
+
+        }
 
         /// <param name="directory">Optional directory to use (used for unit testing), else uses the directory specified in <see cref="WorkingDirectory"/></param>
         private void ExecuteRenameFiles(object directory = null)
