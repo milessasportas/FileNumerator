@@ -22,9 +22,8 @@ namespace FileNumerator.Views
 	{
 		private IMainWindowViewmodel viewmodel;
 
-        public MainWindow() : this(new Viewmodels.MainWindowViewmodel())
+        internal MainWindow() : this(new Viewmodels.MainWindowViewmodel())
         {
-
         }
 
 		public MainWindow(IMainWindowViewmodel vm)
