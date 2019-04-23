@@ -155,7 +155,7 @@ namespace FileNumeratorTests.Models
 		{
 			var renamer = generateRenamer();
 			renamer.FiletypeFilter = new[] { ".dll" };
-			renamer.FilterType = FilterType.IncludeFiltered;
+			renamer.FilterType = FilterMode.IncludeFiltered;
 			Assert.AreEqual(_dllCount, renamer.FilesToIgnore.Count);
 		}
 
@@ -196,7 +196,7 @@ namespace FileNumeratorTests.Models
 			_renamer.Rename();
 			//analyse the renamed files
 			var checkRenamer = generateRenamer();
-			checkRenamer.FilterType = FilterType.IncludeFiltered;
+			checkRenamer.FilterType = FilterMode.IncludeFiltered;
 			checkRenamer.FiletypeFilter = new string[] { ".dll" };
 
 			Action<RenamedFile> reset = f => File.Move(f.NewPath, f.OldPath);

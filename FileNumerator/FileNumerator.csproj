@@ -61,7 +61,7 @@
     <Compile Include="Commands\OpenDirectroyCommandWithNotification.cs" />
     <Compile Include="Converters\FilepathRemover.cs" />
     <Compile Include="Models\FileInfoExtensions.cs" />
-    <Compile Include="Models\FilterType.cs" />
+    <Compile Include="Models\FilterMode.cs" />
     <Compile Include="Models\RenamedFile.cs" />
     <Compile Include="Models\FileRenamer.cs" />
     <Compile Include="Models\RenameException.cs" />

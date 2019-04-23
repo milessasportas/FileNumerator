@@ -43,7 +43,7 @@ namespace FileNumerator.Models
 		/// <param name="ignoredFiletypes">The filetypes which shall be ignored, (e.g. [ ".pdf", ".exe"] )</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, string[] fileendingsToRemove, params string[] ignoredFiletypes) : this(directory, fileendingsToRemove, ignoredFiletypes, FilterType.ExcludeFiltered)
+		public FileRenamer(string directory, string[] fileendingsToRemove, params string[] ignoredFiletypes) : this(directory, fileendingsToRemove, ignoredFiletypes, FilterMode.ExcludeFiltered)
 		{
 
 		}
@@ -57,7 +57,7 @@ namespace FileNumerator.Models
 		/// <param name="filterType">The way to filter filetypes (only search for the <see cref="ignoredFiletypes"/> or ignore them)</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterType filterType) : this(directory, fileendingsToRemove, filetypeFilter, filterType, 1)
+		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterMode filterType) : this(directory, fileendingsToRemove, filetypeFilter, filterType, 1)
 		{
 		}
 
@@ -71,7 +71,7 @@ namespace FileNumerator.Models
 		/// <param name="startNumber">The first number that shall be in the list, defaul 1</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterType filterType, int startNumber) : this(directory, fileendingsToRemove, filetypeFilter, filterType, startNumber, null)
+		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterMode filterType, int startNumber) : this(directory, fileendingsToRemove, filetypeFilter, filterType, startNumber, null)
 		{
 		}
 
@@ -86,7 +86,7 @@ namespace FileNumerator.Models
 		/// <param name="lastNumber">The last number that shall be set, numeration stops when thsi number is reached, deafult null (don't stop)</param>
 		/// <exception cref="ArgumentException"/>
 		/// <exception cref="FileNotFoundException"/>
-		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterType filterType, int startNumber, int? lastNumber)
+		public FileRenamer(string directory, string[] fileendingsToRemove, string[] filetypeFilter, FilterMode filterType, int startNumber, int? lastNumber)
 		{
 			DirectoryToActOn = directory;
 			FileEndingsToRemove = fileendingsToRemove;
@@ -151,7 +151,7 @@ namespace FileNumerator.Models
 
 		public string[] FiletypeFilter { get; set; }
 
-		public FilterType FilterType { get; set; }
+		public FilterMode FilterType { get; set; }
 
 		public int StartNumber { get; set; }
 
@@ -167,12 +167,12 @@ namespace FileNumerator.Models
 		/// <summary>
 		/// Filter on Files showing wich Files to act on
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered ? GetFittingFilesFilteredByFileTyp(_files) : GetTheFilteredFilesByFileType(_files)).ToArray());
+		public IReadOnlyCollection<string> FilesToActOn => Array.AsReadOnly((FilterType == FilterMode.ExcludeFiltered ? GetFittingFilesFilteredByFileTyp(_files) : GetTheFilteredFilesByFileType(_files)).ToArray());
 
 		/// <summary>
 		/// Filter on Files showing wich Files to ignore
 		/// </summary>
-		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly((FilterType == FilterType.ExcludeFiltered ? GetTheFilteredFilesByFileType(_files) : GetFittingFilesFilteredByFileTyp(_files)).ToArray());
+		public IReadOnlyCollection<string> FilesToIgnore => Array.AsReadOnly((FilterType == FilterMode.ExcludeFiltered ? GetTheFilteredFilesByFileType(_files) : GetFittingFilesFilteredByFileTyp(_files)).ToArray());
 
 		#region [ PreviewRenamedFiles ]
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileNumerator.Models
 {
-	public enum FilterType
+	public enum FilterMode
 	{
 		/// <summary>
 		/// The in filter defined file types shall be excluded

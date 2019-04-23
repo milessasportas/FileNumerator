@@ -120,11 +120,11 @@ namespace FileNumerator.Viewmodels
 
         #region [ FilterType ]
 
-        public FilterType FilterType
+        public FilterMode FilterType
         {
             get
             {
-                return _renamer == null? FilterType.ExcludeFiltered : _renamer.FilterType;
+                return _renamer == null? FilterMode.ExcludeFiltered : _renamer.FilterType;
             }
             set
             {

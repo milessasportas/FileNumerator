@@ -59,11 +59,11 @@ namespace FileNumerator.Views
         /// <summary>
         /// List of possible filters
         /// </summary>
-        IEnumerable<FilterType> PossibleFilters { get; }
+        IEnumerable<FilterMode> PossibleFilters { get; }
 
 		/// <summary>
 		/// The selcted Filtermode
 		/// </summary>
-		FilterType FilterType { get; set; }
+		FilterMode FilterType { get; set; }
 	}
 }
