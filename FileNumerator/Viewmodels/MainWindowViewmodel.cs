@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using FileNumerator.Commands;
 using FileNumerator.Models;
@@ -149,24 +150,38 @@ namespace FileNumerator.Viewmodels
             {
                 if (_renamer.DirectoryToActOn != value)
                 {
-                    _renamer.DirectoryToActOn = value;
-                    RaisePropertyChanged(
-                        nameof(WorkingDirectory),
-                        nameof(FoundFiles),
-                        nameof(FilesToActOn),
-                        nameof(ResultingFilenames)
-                    );
+                    try
+                    {
+                        _renamer.DirectoryToActOn = value;
+                        _noFiles = false;
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        MessageBox.Show("No files found in directory!");
+                        _noFiles = true;
+                    }
+                    finally
+                    {
+                        RaisePropertyChanged(
+                            nameof(WorkingDirectory),
+                            nameof(FoundFiles),
+                            nameof(FilesToActOn),
+                            nameof(ResultingFilenames)
+                        );
+                    }
                 }
             }
         }
 
+        private bool _noFiles = false;
+
         #endregion [ WorkingDirectory ] 
 
-        public IEnumerable<string> FoundFiles => _renamer.Files;
+        public IEnumerable<string> FoundFiles => _noFiles ? null : _renamer.Files;
         
-        public IEnumerable<string> FilesToActOn => _renamer.FilesToActOn;
+        public IEnumerable<string> FilesToActOn => _noFiles ? null : _renamer.FilesToActOn;
 
-        public IEnumerable<string> ResultingFilenames => _renamer.PreviewRenamedFiles.Select(f => f.NewPath);
+        public IEnumerable<string> ResultingFilenames => _noFiles ? null : _renamer.PreviewRenamedFiles.Select(f => f.NewPath);
 
 
         #endregion [ Properties ]
