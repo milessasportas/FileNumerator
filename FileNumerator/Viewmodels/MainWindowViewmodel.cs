@@ -201,7 +201,7 @@ namespace FileNumerator.Viewmodels
             try
             {
                 return (directory as string == null) ? 
-                    !string.IsNullOrWhiteSpace(SelectDirectory.SelectedDirectory) : 
+                    !string.IsNullOrWhiteSpace(_renamer.DirectoryToActOn) && _renamer.FilesToActOn.Count != 0: 
                     Directory.Exists(directory as string)
                 ;
             }
