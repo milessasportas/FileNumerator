@@ -225,7 +225,7 @@ namespace FileNumerator.Models
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> GetFittingFilesFilteredByFileTyp(IEnumerable<string> input)
-			=>  returnEmptyArrayIfPassedArrayIsEmptyOrFilledOnlyWithDefaultValues(
+			=>  returnEmptyArrayIfPassedArrayIsEmptyOrFilledWithDefaultValues(
                 input.Where(f => !FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty());
 
         /// <summary>
@@ -235,10 +235,31 @@ namespace FileNumerator.Models
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
         /// <returns></returns>
-        private IEnumerable<T> returnEmptyArrayIfPassedArrayIsEmptyOrFilledOnlyWithDefaultValues<T>(IEnumerable<T> enumerable)
-            => (enumerable.Count() == 0 || enumerable.All(v => v.Equals(default(T))))? new T[0] : enumerable;
+        private IEnumerable<T> returnEmptyArrayIfPassedArrayIsEmptyOrFilledWithDefaultValues<T>(IEnumerable<T> enumerable)
+            => emptyOrOnlyDefaultValue(enumerable)? new T[0] : enumerable;
 
+        private bool emptyOrOnlyDefaultValue<T>(IEnumerable<T> enumerable)
+        {
+            if (enumerable.Count() == 0)
+                return true;
 
+            //act diffrently for diffrent types
+            switch (Type.GetTypeCode(typeof(T)))
+            {
+                case TypeCode.String:
+                    return enumerable.All(s => string.IsNullOrWhiteSpace(s as string));
+                
+                case TypeCode.Object:
+                    return enumerable.All(e => e == null || e.Equals(default(T)));
+
+                case TypeCode.Boolean:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                default:
+                    return enumerable.All(e => e.Equals(default(T)));
+            }
+        }
 
 		/// <summary>
 		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
@@ -246,7 +267,7 @@ namespace FileNumerator.Models
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> GetTheFilteredFilesByFileType(IEnumerable<string> input)
-			=> returnEmptyArrayIfPassedArrayIsEmptyOrFilledOnlyWithDefaultValues(
+			=> returnEmptyArrayIfPassedArrayIsEmptyOrFilledWithDefaultValues(
                 input.Where(f => FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty));
 
 		/// <summary>
