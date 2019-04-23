@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,11 @@ namespace FileNumerator.Viewmodels
 		{
 			instantiateCommands();
             _renamer = new FileRenamer(AppDomain.CurrentDomain.BaseDirectory /*TODO: add the last working dorectory to app.config*/);
+            FileExtensionFilter.CollectionChanged += (s, e) =>
+            {
+                _renamer.FileExtensionFilter = FileExtensionFilter.ToArray();
+                this.RaisePropertyChanged(nameof(FilesToActOn), nameof(ResultingFilenames));
+            };
 		}
 
 
@@ -74,31 +80,15 @@ namespace FileNumerator.Viewmodels
 			}
 		}
 
-		#endregion [ StartNumber ] 
+        #endregion [ StartNumber ] 
 
-		#region [ IgnorFileType ]
+        /// <summary>
+        /// List of FileExtensions which will be filtered on
+        /// </summary>
+        public ObservableCollection<string> FileExtensionFilter { get; } = new ObservableCollection<string>();
 
-		List<string> _ignorFileType;
 
-		public List<string> IgnorFileType
-		{
-			get
-			{
-				return _ignorFileType;
-			}
-			set
-			{
-				if (_ignorFileType != value)
-				{
-					_ignorFileType = value;
-					RaisePropertyChanged(nameof(IgnorFileType));
-				}
-			}
-		}
-
-		#endregion [ IgnorFileType ] 
-
-		#region [ DeleteFileendings ]
+        #region [ DeleteFileendings ]
 
         public string[] DeleteFileendings
 		{
@@ -131,7 +121,12 @@ namespace FileNumerator.Viewmodels
                 if (_renamer != null && _renamer.FilterType != value)
                 {
                     _renamer.FilterType = value;
-                    RaisePropertyChanged(nameof(FilterType));
+                    RaisePropertyChanged(
+                        nameof(FilterType),
+                        nameof(FilesToActOn),
+                        nameof(ResultingFilenames)
+                    );
+                    
                 }
             }
         }
@@ -168,6 +163,7 @@ namespace FileNumerator.Viewmodels
                         RaisePropertyChanged(
                             nameof(WorkingDirectory),
                             nameof(FoundFiles),
+                            nameof(FoundFileextensions),
                             nameof(FilesToActOn),
                             nameof(ResultingFilenames)
                         );
@@ -181,7 +177,9 @@ namespace FileNumerator.Viewmodels
         #endregion [ WorkingDirectory ] 
 
         public IEnumerable<string> FoundFiles => _noFiles ? null : _renamer.Files;
-        
+
+        public IEnumerable<string> FoundFileextensions => _noFiles ? null : _renamer.Files.Select(f => Path.GetExtension(f)).Distinct().OrderBy(f => f[1]);
+
         public IEnumerable<string> FilesToActOn => _noFiles ? null : _renamer.FilesToActOn;
 
         public IEnumerable<string> ResultingFilenames => _noFiles ? null : _renamer.PreviewRenamedFiles.Select(f => f.NewPath);
@@ -232,9 +230,7 @@ namespace FileNumerator.Viewmodels
 
 		ICommand IMainWindowViewmodel.SelectDirectory => SelectDirectory;
 
-		IEnumerable<string> IMainWindowViewmodel.IgnorFileType { get => IgnorFileType; set => IgnorFileType = value.ToList(); }
-
-		IEnumerable<string> IMainWindowViewmodel.DeleteFileendings { get => DeleteFileendings; set => DeleteFileendings = value.ToArray(); }
+        IEnumerable<string> IMainWindowViewmodel.DeleteFileendings { get => DeleteFileendings; set => DeleteFileendings = value.ToArray(); }
 
         #endregion [ Explicit IMainWindowViewmodel ]
 

@@ -33,5 +33,16 @@ namespace FileNumerator.Views
 			InitializeComponent();
 		}
 
-	}
+        //todo remove
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            viewmodel.FileExtensionFilter.Add((sender as CheckBox).Content.ToString());
+        }
+
+        //todo remove
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            viewmodel.FileExtensionFilter.Remove((sender as CheckBox).Content.ToString());
+        }
+    }
 }

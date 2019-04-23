@@ -49,12 +49,12 @@
                             </GroupBox>
                             <GroupBox Header="{Binding FilterType, Mode=OneWay, Converter={StaticResource ModeToHeaderConverter}}" Grid.Column="1" Style="{DynamicResource GroupboxHeadderBottomRight}">
                                 <GroupBox.ToolTip>
-                                    <TextBlock>Select which filextensions to remove</TextBlock>
+                                    <TextBlock>Select which files to act on</TextBlock>
                                 </GroupBox.ToolTip>
-                                <ListView >
+                                <ListView ItemsSource="{Binding FoundFileextensions}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <CheckBox Margin="0" Padding="0" BorderThickness="0" Content="Text"/>
+                                            <CheckBox Margin="0" BorderThickness="0" Content="{Binding }" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/> <!--Todo: handle in converter-->
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
@@ -87,10 +87,22 @@
                         </GroupBox>
                         
                         <GroupBox Grid.Row="2" Grid.Column="0" Header="Files to Rename" Width="{Binding ElementName=PreviewFilesnames, Path=ActualWidth}" Style="{DynamicResource GroupboxHeadderBottomRight}">
-                            <ListView ItemsSource="{Binding Path=FilesToActOn}" MinHeight="40" />
+                            <ListView ItemsSource="{Binding Path=FilesToActOn}" MinHeight="40">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock ToolTip="{Binding }" Text="{Binding  Converter={StaticResource DirectoryPathRemover}}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </GroupBox>
                         <GroupBox Grid.Row="2" Grid.Column="1" Name="PreviewFiles" Header="Preview renaming result" Style="{DynamicResource GroupboxHeadderBottomRight}" >
-                            <ListView ItemsSource="{Binding Path=ResultingFilenames}" />
+                            <ListView ItemsSource="{Binding Path=ResultingFilenames}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock ToolTip="{Binding }" Text="{Binding  Converter={StaticResource DirectoryPathRemover}}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
                         </GroupBox>
                     </Grid>
                     <Button DockPanel.Dock="Top" Command="{Binding RenameFiles}" HorizontalAlignment="Center" Margin="0,10" Padding="20,0" Content="Rename"/>

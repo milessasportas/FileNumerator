@@ -23,7 +23,7 @@ namespace FileNumeratorTests.Models
 			_filecount = 18;
 			_dllCount = 9;
 			_nonDllCount = _filecount - _dllCount;
-			_renamer.FiletypeFilter = new string[] { ".exe", ".config", ".pdb", ".xml", ".pdf" };
+			_renamer.FileExtensionFilter = new string[] { ".exe", ".config", ".pdb", ".xml", ".pdf" };
 			_renamer.FileEndingsToRemove = new string[] { "-part", "-final", "-edit" };
 		}
 
@@ -133,7 +133,7 @@ namespace FileNumeratorTests.Models
 		public void NothingToActOnTest()
 		{
 			var renamer = generateRenamer();
-			renamer.FiletypeFilter = new string[] { ".dll" };
+			renamer.FileExtensionFilter = new string[] { ".dll" };
 			var filtered = renamer.GetFittingFilesFilteredByFileTyp(mocDllFiles);
 			Assert.IsTrue(string.Join("", filtered.ToArray()) == string.Empty);
 		}
@@ -146,7 +146,7 @@ namespace FileNumeratorTests.Models
 		public void FilterInclusive()
 		{
 			var renamer = generateRenamer();
-			renamer.FiletypeFilter = new[] { ".dll" };
+			renamer.FileExtensionFilter = new[] { ".dll" };
 			Assert.AreEqual(_nonDllCount, renamer.FilesToIgnore.Count);
 		}
 
@@ -154,7 +154,7 @@ namespace FileNumeratorTests.Models
 		public void FilterExclusive()
 		{
 			var renamer = generateRenamer();
-			renamer.FiletypeFilter = new[] { ".dll" };
+			renamer.FileExtensionFilter = new[] { ".dll" };
 			renamer.FilterType = FilterMode.IncludeFiltered;
 			Assert.AreEqual(_dllCount, renamer.FilesToIgnore.Count);
 		}
@@ -197,7 +197,7 @@ namespace FileNumeratorTests.Models
 			//analyse the renamed files
 			var checkRenamer = generateRenamer();
 			checkRenamer.FilterType = FilterMode.IncludeFiltered;
-			checkRenamer.FiletypeFilter = new string[] { ".dll" };
+			checkRenamer.FileExtensionFilter = new string[] { ".dll" };
 
 			Action<RenamedFile> reset = f => File.Move(f.NewPath, f.OldPath);
 			try

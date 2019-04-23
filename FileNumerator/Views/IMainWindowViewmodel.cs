@@ -1,6 +1,7 @@
 ﻿using FileNumerator.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -31,10 +32,10 @@ namespace FileNumerator.Views
 		/// </summary>
 		int? LastNumber { get; set; }
 
-		/// <summary>
-		/// The to ignored filetyped e.g. .pdf
-		/// </summary>
-		IEnumerable<string> IgnorFileType { get; set; }
+        /// <summary>
+        /// The to ignored filetyped e.g. .pdf
+        /// </summary>
+        ObservableCollection<string> FileExtensionFilter { get; }
 
 		/// <summary>
 		/// The to removed fileendings e.g. -final
@@ -45,6 +46,11 @@ namespace FileNumerator.Views
         /// List of found files in the directory
         /// </summary>
         IEnumerable<string> FoundFiles { get; }
+
+        /// <summary>
+        /// List of found fileextensions
+        /// </summary>
+        IEnumerable<string> FoundFileextensions { get; }
 
         /// <summary>
         /// List of files which names will change

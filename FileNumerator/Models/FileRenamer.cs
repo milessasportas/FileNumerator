@@ -90,7 +90,7 @@ namespace FileNumerator.Models
 		{
 			DirectoryToActOn = directory;
 			FileEndingsToRemove = fileendingsToRemove;
-			FiletypeFilter = filetypeFilter;
+			FileExtensionFilter = filetypeFilter;
 			FilterType = filterType;
 			StartNumber = startNumber;
 			LastNumber = lastNumber;
@@ -149,7 +149,7 @@ namespace FileNumerator.Models
 		/// </summary>
 		public string[] FileEndingsToRemove { get; set; }
 
-		public string[] FiletypeFilter { get; set; }
+		public string[] FileExtensionFilter { get; set; }
 
 		public FilterMode FilterType { get; set; }
 
@@ -220,13 +220,13 @@ namespace FileNumerator.Models
 		#endregion [ Properties ]
 
 		/// <summary>
-		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
+		/// Applies the sepcified filter (<see cref="FileExtensionFilter"/>) to the Enumerable input
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> GetFittingFilesFilteredByFileTyp(IEnumerable<string> input)
 			=>  returnEmptyArrayIfPassedArrayIsEmptyOrFilledWithDefaultValues(
-                input.Where(f => !FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty());
+                input.Where(f => !FileExtensionFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty());
 
         /// <summary>
         /// Test if the passed enumerable has any elements or only default values.<para/>
@@ -262,13 +262,13 @@ namespace FileNumerator.Models
         }
 
 		/// <summary>
-		/// Applies the sepcified filter (<see cref="FiletypeFilter"/>) to the Enumerable input
+		/// Applies the sepcified filter (<see cref="FileExtensionFilter"/>) to the Enumerable input
 		/// </summary>
 		/// <param name="input"></param>
 		/// <returns></returns>
 		public IEnumerable<string> GetTheFilteredFilesByFileType(IEnumerable<string> input)
 			=> returnEmptyArrayIfPassedArrayIsEmptyOrFilledWithDefaultValues(
-                input.Where(f => FiletypeFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty));
+                input.Where(f => FileExtensionFilter.Any(t => f.EndsWith(t, StringComparison.OrdinalIgnoreCase))).DefaultIfEmpty(string.Empty));
 
 		/// <summary>
 		/// Renames the files 
