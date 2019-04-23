@@ -5,16 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:FileNumerator.Viewmodels"
         xmlns:local="clr-namespace:FileNumerator.Views"
+        xmlns:conv="clr-namespace:FileNumerator.Converters"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewmodel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Title="MainWindow" MinHeight="550" Height="550" MinWidth="420" Width="420">
+    <Window.Resources>
+        <conv:FilepathRemover x:Key="DirectoryPathRemover"/>
+    </Window.Resources>
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <GroupBox Header="Files" MinWidth="322" >
                 <DockPanel>
                     <Button Content="Select Directory" HorizontalAlignment="Center" Padding="10,0" Margin="0,0,0,5" Command="{Binding SelectDirectory}" DockPanel.Dock="Top"/>
                     <GroupBox Header="Found Files" DockPanel.Dock="Top">
-                        <ListView ItemsSource="{Binding FoundFiles}" BorderThickness="0"/>
+                        <ListView ItemsSource="{Binding FoundFiles}" BorderThickness="0" MaxHeight="80">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock ToolTip="{Binding }" Text="{Binding Mode=OneWay, Converter={StaticResource DirectoryPathRemover}}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                         <!--Todo: center listviewitems-->
                     </GroupBox>
                     <GroupBox Header="Filter by Extension" DockPanel.Dock="Top" >
