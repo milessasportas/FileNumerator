@@ -16,7 +16,16 @@ namespace FileNumerator.Commands
         {
             set
             {
-                if(SelectedDirectory != value)
+                try
+                {
+                    if (SelectedDirectory != value)
+                    {
+                        base.SelectedDirectory = value;
+                        DirectorySelected.Invoke(this, value);
+                    }
+                }
+                //if no directy is seleceted
+                catch (DirectoryNotSelectedException)
                 {
                     base.SelectedDirectory = value;
                     DirectorySelected.Invoke(this, value);
